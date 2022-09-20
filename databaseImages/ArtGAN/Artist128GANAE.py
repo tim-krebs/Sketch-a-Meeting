@@ -121,7 +121,7 @@ def generator(inp_z, inp_y, reuse=False):
         g1 = batchnorm(g1, is_training=tf.constant(True), name=gname + 'bn1g')
         g1 = lrelu(g1, 0.2)
         g1_reshaped = tf.reshape(g1, [-1, 512, sz, sz])
-        print 'genreshape: ' + str(g1_reshaped.get_shape().as_list())
+        print('genreshape: ' + str(g1_reshaped.get_shape().as_list()))
 
         g2 = nnupsampling(g1_reshaped, [8, 8])
         g2 = conv2d(g2, nout=512, kernel=3, name=gname + 'deconv2')
@@ -166,8 +166,8 @@ Opred_g, recon_g = discriminator(samples, reuse=True)
 t_vars = tf.trainable_variables()
 d_vars = [var for var in t_vars if dname in var.name]
 g_vars = [var for var in t_vars if gname in var.name]
-print [var.name for var in d_vars]
-print [var.name for var in g_vars]
+print([var.name for var in d_vars])
+print([var.name for var in g_vars])
 
 # Define D loss
 lreal = log_sum_exp(Opred_n)
@@ -224,7 +224,7 @@ with tf.Session(config=config) as sess:
         })
         # print losses
         if i_iter % display_iter == 0 or i_iter == max_iter - 1:
-            print 'Iteration: %i, lossDn: %.2f, lossOn: %.2f, lossFake: %.2f' % (i_iter, lossDn, lossOn, lossFake)
+            print('Iteration: %i, lossDn: %.2f, lossOn: %.2f, lossFake: %.2f' % (i_iter, lossDn, lossOn, lossFake))
         # Evaluate classification accuracy
         if i_iter % eval_iter == 0 or i_iter == max_iter - 1:
             total_Oaccuracy = 0.
@@ -234,7 +234,7 @@ with tf.Session(config=config) as sess:
                 batch_y = batch_y.get().transpose()
                 total_Oaccuracy += sess.run(Oaccuracy,
                                             feed_dict={x_n: batch_x, y: batch_y, keep_prob: 1., is_train: False})
-            print 'Iteration %i, Accuracy: %.2f' % (i_iter, total_Oaccuracy / mb_idx)
+            print('Iteration %i, Accuracy: %.2f' % (i_iter, total_Oaccuracy / mb_idx))
         # Store images
         if i_iter % store_img_iter == 0 or i_iter == max_iter - 1:
             # Store Generated

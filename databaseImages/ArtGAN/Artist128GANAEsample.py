@@ -32,7 +32,7 @@ def generator(inp_z, inp_y, reuse=False):
         g1 = batchnorm(g1, is_training=tf.constant(True), name=gname + 'bn1g')
         g1 = lrelu(g1, 0.2)
         g1_reshaped = tf.reshape(g1, [-1, 512, sz, sz])
-        print 'genreshape: ' + str(g1_reshaped.get_shape().as_list())
+        print('genreshape: ' + str(g1_reshaped.get_shape().as_list()))
 
         g2 = nnupsampling(g1_reshaped, [8, 8])
         g2 = conv2d(g2, nout=512, kernel=3, name=gname + 'deconv2')
